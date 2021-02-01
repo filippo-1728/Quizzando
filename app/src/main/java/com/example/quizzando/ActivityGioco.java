@@ -4,6 +4,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.graphics.Color;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Parcelable;
@@ -20,14 +21,14 @@ import java.util.Locale;
 
 public class ActivityGioco extends AppCompatActivity {
 
-    private Button BtnRisposta1, BtnRisposta2, BtnRisposta3, BtnRisposta4, Indietro, Btn_IniziaGioco, btn_ScorrDomanda, btn_FineGIoco;
-    private TextView VisualizzaDomanda, VisualizzaPunteggio, VisualizzaTempo, TextView_Punteggio, textView_Timer, TextViewDomanda, textView_PreGioco,textNomeGiocatore2;
+    private Button BtnRisposta1, BtnRisposta2, BtnRisposta3, BtnRisposta4, Btn_IniziaGioco, btn_ScorrDomanda, btn_FineGIoco;
+    private TextView VisualizzaDomanda, VisualizzaPunteggio, VisualizzaTempo, TextView_Punteggio, textView_Timer, TextViewDomanda, textView_PreGioco,textNomeGiocatore2,textViewRisultatoFinale2;
     private TableLayout tableLayout2;
     private ImageView imageView1R3;
 
-    private String mAnswer;  // correct answer for question in mQuestionView
-    private int mScore = 0;  // current total score
-    private int mQuestionNumber = 0; // current question number
+    private String mAnswer;
+    private int mScore = 0;
+    private int mQuestionNumber;
     private CountDownTimer countDownTimer;
     public int RisposteSbagliate = 0;
     private String NomeGiocatore,Sbagliate,Giuste;
@@ -43,7 +44,6 @@ public class ActivityGioco extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gioco);
-        Indietro = (Button) findViewById(R.id.btn_IndietroGioco);
         VisualizzaDomanda = (TextView) findViewById(R.id.TextView_VisualizzaDomanda);
         VisualizzaPunteggio = (TextView) findViewById(R.id.textView_VisualizzaPunteggio);
         VisualizzaTempo = (TextView) findViewById(R.id.textView_VisualizzaTimer);
@@ -64,11 +64,14 @@ public class ActivityGioco extends AppCompatActivity {
         imageView1R3 = (ImageView) findViewById(R.id.imageView1R3);
         imageView1R3.setVisibility(View.INVISIBLE);
         btn_FineGIoco = (Button) findViewById(R.id.btn_FineGioco);
+        textViewRisultatoFinale2 = (TextView) findViewById(R.id.textViewRisultatoFinale2);
 
         mQuestionLibrary.initQuestions(getApplicationContext());
         updateQuestion();
         // show current total score for the user
         updateScore(mScore);
+        Regolamento();
+
 
 
         Intent im1 = getIntent();
@@ -104,6 +107,7 @@ public class ActivityGioco extends AppCompatActivity {
             i.putExtra("Punteggio",Giuste);
             i.putExtra("Sbagliate",Sbagliate);
             startActivity(i);
+            finish();
         });
 
 
@@ -118,7 +122,6 @@ public class ActivityGioco extends AppCompatActivity {
             }
             updateQuestion();
 
-
             BtnRisposta1.setBackgroundColor(Color.BLUE);
             BtnRisposta2.setBackgroundColor(Color.BLUE);
             BtnRisposta3.setBackgroundColor(Color.BLUE);
@@ -132,22 +135,31 @@ public class ActivityGioco extends AppCompatActivity {
 
 
         Btn_IniziaGioco.setOnClickListener(v -> {
-            BtnRisposta1.setVisibility(View.VISIBLE);
-            BtnRisposta2.setVisibility(View.VISIBLE);
-            BtnRisposta3.setVisibility(View.VISIBLE);
-            BtnRisposta4.setVisibility(View.VISIBLE);
-            Indietro.setVisibility(View.VISIBLE);
-            tableLayout2.setVisibility(View.VISIBLE);
-            VisualizzaTempo.setVisibility(View.VISIBLE);
-            VisualizzaPunteggio.setVisibility(View.VISIBLE);
-            VisualizzaDomanda.setVisibility(View.VISIBLE);
-            TextView_Punteggio.setVisibility(View.VISIBLE);
-            textView_Timer.setVisibility(View.VISIBLE);
-            TextViewDomanda.setVisibility(View.VISIBLE);
-            Btn_IniziaGioco.setVisibility(View.VISIBLE);
-            textView_PreGioco.setVisibility(View.INVISIBLE);
-            Btn_IniziaGioco.setVisibility(View.INVISIBLE);
-            Indietro.setVisibility(View.INVISIBLE);
+
+            if(Btn_IniziaGioco.getText().toString().equals("PRONTO?"))
+            {
+                Btn_IniziaGioco.setText("INIZIA");
+                textViewRisultatoFinale2.setText("Quizzando");
+
+            }
+            if(Btn_IniziaGioco.getText().toString().equals("INIZIA"))
+            {
+                BtnRisposta1.setVisibility(View.VISIBLE);
+                BtnRisposta2.setVisibility(View.VISIBLE);
+                BtnRisposta3.setVisibility(View.VISIBLE);
+                BtnRisposta4.setVisibility(View.VISIBLE);
+                tableLayout2.setVisibility(View.VISIBLE);
+                VisualizzaTempo.setVisibility(View.VISIBLE);
+                VisualizzaPunteggio.setVisibility(View.VISIBLE);
+                VisualizzaDomanda.setVisibility(View.VISIBLE);
+                TextView_Punteggio.setVisibility(View.VISIBLE);
+                textView_Timer.setVisibility(View.VISIBLE);
+                TextViewDomanda.setVisibility(View.VISIBLE);
+                Btn_IniziaGioco.setVisibility(View.VISIBLE);
+                textView_PreGioco.setVisibility(View.INVISIBLE);
+                Btn_IniziaGioco.setVisibility(View.INVISIBLE);
+            }
+
 
             if (mTimerRunning) {
                 pauseTimer();
@@ -156,11 +168,6 @@ public class ActivityGioco extends AppCompatActivity {
             }
         });
 
-
-        Indietro.setOnClickListener(v -> {
-            Intent c = new Intent(ActivityGioco.this, MainActivity.class);
-            startActivity(c);
-        });
 
         BtnRisposta1.setOnClickListener(v -> {
 
@@ -173,12 +180,14 @@ public class ActivityGioco extends AppCompatActivity {
             btn_ScorrDomanda.setVisibility(View.VISIBLE);
             if (BtnRisposta1.getText().equals(mAnswer)) {
                 mScore = mScore + 1;
-                Toast.makeText(ActivityGioco.this, "Correct!", Toast.LENGTH_SHORT).show();
+                SuonoRispCorretta();
+                Toast.makeText(ActivityGioco.this, "Corretto!", Toast.LENGTH_SHORT).show();
                 BtnRisposta1.setBackgroundColor(Color.GREEN);
                 BtnRisposta1.setEnabled(false);
                 updateScore(mScore);
             } else {
-                Toast.makeText(ActivityGioco.this, "Wrong!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ActivityGioco.this, "Sbagliata!", Toast.LENGTH_SHORT).show();
+                SuonoRispSbagliata();
                 RisposteSbagliate = RisposteSbagliate +1;
                 BtnRisposta1.setEnabled(false);
                 BtnRisposta1.setBackgroundColor(Color.RED);
@@ -220,12 +229,14 @@ public class ActivityGioco extends AppCompatActivity {
             btn_ScorrDomanda.setVisibility(View.VISIBLE);
             if (BtnRisposta2.getText().equals(mAnswer)) {
                 mScore = mScore + 1;
-                Toast.makeText(ActivityGioco.this, "Correct!", Toast.LENGTH_SHORT).show();
+                SuonoRispCorretta();
+                Toast.makeText(ActivityGioco.this, "Corretto!", Toast.LENGTH_SHORT).show();
                 BtnRisposta2.setBackgroundColor(Color.GREEN);
                 BtnRisposta2.setEnabled(false);
                 updateScore(mScore);
             } else {
-                Toast.makeText(ActivityGioco.this, "Wrong!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ActivityGioco.this, "Sbagliata!", Toast.LENGTH_SHORT).show();
+                SuonoRispSbagliata();
                 RisposteSbagliate = RisposteSbagliate +1;
                 BtnRisposta2.setBackgroundColor(Color.RED);
                 BtnRisposta2.setEnabled(false);
@@ -267,12 +278,14 @@ public class ActivityGioco extends AppCompatActivity {
             btn_ScorrDomanda.setVisibility(View.VISIBLE);
             if (BtnRisposta3.getText().equals(mAnswer)) {
                 mScore = mScore + 1;
-                Toast.makeText(ActivityGioco.this, "Correct!", Toast.LENGTH_SHORT).show();
+                SuonoRispCorretta();
+                Toast.makeText(ActivityGioco.this, "Corretto!", Toast.LENGTH_SHORT).show();
                 BtnRisposta3.setBackgroundColor(Color.GREEN);
                 BtnRisposta3.setEnabled(false);
                 updateScore(mScore);
             } else {
-                Toast.makeText(ActivityGioco.this, "Wrong!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ActivityGioco.this, "Sbagliata!", Toast.LENGTH_SHORT).show();
+                SuonoRispSbagliata();
                 RisposteSbagliate = RisposteSbagliate +1;
                 BtnRisposta3.setBackgroundColor(Color.RED);
                 BtnRisposta3.setEnabled(false);
@@ -314,12 +327,14 @@ public class ActivityGioco extends AppCompatActivity {
             btn_ScorrDomanda.setVisibility(View.VISIBLE);
             if (BtnRisposta4.getText().equals(mAnswer)) {
                 mScore = mScore + 1;
-                Toast.makeText(ActivityGioco.this, "Correct!", Toast.LENGTH_SHORT).show();
+                SuonoRispCorretta();
+                Toast.makeText(ActivityGioco.this, "Corretto!", Toast.LENGTH_SHORT).show();
                 BtnRisposta4.setBackgroundColor(Color.GREEN);
                 BtnRisposta4.setEnabled(false);
                 updateScore(mScore);
             } else {
-                Toast.makeText(ActivityGioco.this, "Wrong!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ActivityGioco.this, "Sbagliata!", Toast.LENGTH_SHORT).show();
+                SuonoRispSbagliata();
                 RisposteSbagliate = RisposteSbagliate +1;
                 BtnRisposta4.setBackgroundColor(Color.RED);
                 BtnRisposta4.setEnabled(false);
@@ -366,6 +381,7 @@ public class ActivityGioco extends AppCompatActivity {
                     if (mQuestionNumber < mQuestionLibrary.getLength())
                     {
                         updateQuestion();
+                        SuonoRispSbagliata();
                         resetTimer();
                         startTimer();
                         RisposteSbagliate = RisposteSbagliate +1;
@@ -413,6 +429,19 @@ public class ActivityGioco extends AppCompatActivity {
         }
     }
 
+    private void SuonoRispCorretta()
+    {
+        final MediaPlayer SuonoGiusto = MediaPlayer.create(this,R.raw.correct_sound);
+        SuonoGiusto.start();
+
+    }
+
+    private void SuonoRispSbagliata()
+    {
+        final MediaPlayer SuonoSbagliato = MediaPlayer.create(this,R.raw.incorrect_sound);
+        SuonoSbagliato.start();
+    }
+
     private void UltimaDomanda()
     {
         if(mQuestionNumber == mQuestionLibrary.getLength()) {
@@ -422,7 +451,7 @@ public class ActivityGioco extends AppCompatActivity {
             BtnRisposta3.setEnabled(false);
             BtnRisposta4.setEnabled(false);
             btn_FineGIoco.setVisibility(View.VISIBLE);
-            Toast.makeText(ActivityGioco.this, "It was the last question!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(ActivityGioco.this, "Era l'ultima domanda!", Toast.LENGTH_SHORT).show();
             AlertDialog.Builder builder = new AlertDialog.Builder(ActivityGioco.this);
             builder.setTitle("Attenzione");
             builder.setMessage("Quiz finito!");
@@ -435,8 +464,15 @@ public class ActivityGioco extends AppCompatActivity {
         }
     }
 
-    // show current total score for the user
+    private void Regolamento()
+    {
+        String Regole;
+        Regole = "1) Per ogni domanda si hanno 10 secondi al termine di questi ultimi si passerà alla domanda successiva\n\n2) Una volta scelta la risposta verranno autamaticamente mostrate quelle sbagliate e quella vera\n\n3) Dopo aver scelto la risposta bisogna cliccare sul pulsante per poter andare avanti\n\n4) Ultima cosa divertirsi!";
+        textView_PreGioco.setText(Regole);
+    }
+
     private void updateScore(int point) {
         VisualizzaPunteggio.setText("" + mScore + "/" + mQuestionLibrary.getLength());
     }
+
 }

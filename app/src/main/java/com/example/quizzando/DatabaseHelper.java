@@ -45,7 +45,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public long addInitialQuestion(Domande question) {
         SQLiteDatabase db = this.getWritableDatabase();
-        // Creating content values
         ContentValues values = new ContentValues();
         values.put(QUESTION, question.getQuestion());
         values.put(CHOICE1, question.getChoice(0));
@@ -53,20 +52,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(CHOICE3,  question.getChoice(2));
         values.put(CHOICE4,  question.getChoice(3));
         values.put(ANSWER, question.getAnswer());
-        // insert row in question table
         long insert = db.insert(TABLE_QUESTION, null, values);
         return insert;
     }
 
     public List<Domande> getAllQuestionsList() {
 
+        SQLiteDatabase db = this.getReadableDatabase();        //db.execSQL("DELETE FROM "+ TABLE_QUESTION);
+
         List<Domande> questionArrayList = new ArrayList<>();
         String selectQuery = "SELECT  * FROM " + TABLE_QUESTION;
 
-        SQLiteDatabase db = this.getReadableDatabase();
         Cursor c = db.rawQuery(selectQuery, null);
 
-        // looping through all records and adding to the list
         if (c.moveToFirst()) {
             do {
                 Domande question = new Domande();

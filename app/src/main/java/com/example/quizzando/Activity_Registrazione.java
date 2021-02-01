@@ -114,15 +114,14 @@ public class Activity_Registrazione extends AppCompatActivity {
         EditText edit=(EditText)findViewById(R.id.textNomeAutore);
         btn_AvantiInCrea.setOnClickListener (v -> {
 
-            if(imagine1!=-1 && edit.getText().toString().trim().length()>0 ) // || colore1!=-1 || colore2!=-1 || colore3!=-1 || colore4!=-1
+            if(imagine1!=-1 && edit.getText().toString().trim().length()>0 )
             {
                 Intent c= new Intent (Activity_Registrazione.this,ActivityGioco.class);
-                //c.putExtra("Message",msgNome.getText().toString());
-                //c.putExtra("Prov",msgOpera.getText().toString());
                 c.putExtra("Png1",imagine1);
                 c.putExtra("colore1",colore1);
                 c.putExtra("Message",edit.getText().toString());
                 startActivity(c);
+                finish();
             }
             else
             {

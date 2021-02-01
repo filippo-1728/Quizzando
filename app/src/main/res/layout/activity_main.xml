@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@android:color/holo_blue_dark"
     tools:context=".MainActivity">
 
     <TextView
@@ -11,38 +12,29 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="serif"
-        android:text="Quizzando"
+        android:text="Quizzando!"
         android:textAppearance="@style/TextAppearance.AppCompat.Display1"
         android:textColor="@color/red"
+        android:textSize="36sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.064" />
+        app:layout_constraintVertical_bias="0.241" />
 
     <Button
         android:id="@+id/btn_Login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="LOGIN"
+        android:textColor="@color/black"
+        app:backgroundTint="@color/orange"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.489"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.516" />
-
-    <Button
-        android:id="@+id/btn_Classifica"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="CLASSIFICA"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.761" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
