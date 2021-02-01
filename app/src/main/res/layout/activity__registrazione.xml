@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Activity_Registrazione">
+
+    <TextView
+        android:id="@+id/textViewRisultatoFinale4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="serif"
+        android:text="Registrazione giocatore"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+        android:textColor="@color/red"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.476"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.005" />
+
+    <EditText
+        android:id="@+id/textNomeAutore"
+        android:layout_width="243dp"
+        android:layout_height="41dp"
+        android:ems="10"
+        android:gravity="center"
+        android:inputType="textPersonName"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        android:textColor="@color/purple_500"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.875"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.172" />
+
+    <ImageView
+        android:id="@+id/imageView1R"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_weight="1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.832" />
+
+    <TableLayout
+        android:id="@+id/tableLayout7"
+        android:layout_width="210dp"
+        android:layout_height="55dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.322">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <Button
+            android:id="@+id/btnScegliImmagine"
+            android:layout_width="185dp"
+            android:layout_height="45dp"
+            android:gravity="center"
+            android:text="Scegli immagine"
+            android:textColor="@color/yellow"
+            app:backgroundTint="@color/teal_700"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.048"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.268" />
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <TableRow
+            android:layout_width="81dp"
+            android:layout_height="12dp" />
+
+    </TableLayout>
+
+    <TableLayout
+        android:id="@+id/tableLayout6"
+        android:layout_width="210dp"
+        android:layout_height="55dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.536">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <Button
+            android:id="@+id/btnSceltaRandom"
+            android:layout_width="185dp"
+            android:layout_height="45dp"
+            android:gravity="center"
+            android:text="Scelta random"
+            android:textColor="@color/yellow"
+            app:backgroundTint="@color/teal_700"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.96"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.325" />
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+
+    </TableLayout>
+
+    <TableLayout
+        android:id="@+id/tableLayout8"
+        android:layout_width="210dp"
+        android:layout_height="55dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.434">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <TableRow
+            android:layout_width="81dp"
+            android:layout_height="12dp" />
+
+        <Button
+            android:id="@+id/btn_SceltaColors"
+            android:layout_width="200dp"
+            android:layout_height="45dp"
+            android:text="Colore immagine"
+            android:textColor="@color/yellow"
+            app:backgroundTint="@color/teal_700"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.051"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.499" />
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </TableLayout>
+
+    <TextView
+        android:id="@+id/textViewNomeAutore"
+        android:layout_width="104dp"
+        android:layout_height="41dp"
+        android:gravity="center|center_horizontal"
+        android:text="NOME GIOCATORE:"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        android:textColor="@color/purple_500"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.052"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.173" />
+
+    <Button
+        android:id="@+id/btnIndietroInCrea"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ANNULLA"
+        android:textColor="@color/black"
+        app:backgroundTint="@color/orange"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.051"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.976" />
+
+    <Button
+        android:id="@+id/btnAvantiInCrea2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="FINE"
+        android:textColor="@color/black"
+        app:backgroundTint="@color/orange"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.934"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.976" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

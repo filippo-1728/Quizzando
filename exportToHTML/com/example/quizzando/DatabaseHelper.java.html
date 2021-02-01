@@ -1,0 +1,120 @@
+<html>
+<head>
+<title>DatabaseHelper.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cc7832;}
+.s1 { color: #a9b7c6;}
+.s2 { color: #6a8759;}
+.s3 { color: #6897bb;}
+.s4 { color: #808080;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+DatabaseHelper.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com.example.quizzando</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">android.content.ContentValues</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.content.Context</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.database.Cursor</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.database.sqlite.SQLiteDatabase</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.database.sqlite.SQLiteOpenHelper</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">java.util.ArrayList</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">java.util.Collections</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">java.util.List</span><span class="s0">;</span>
+
+<span class="s0">public class </span><span class="s1">DatabaseHelper </span><span class="s0">extends </span><span class="s1">SQLiteOpenHelper {</span>
+    <span class="s0">public static </span><span class="s1">String DATABASE_QUESTION = </span><span class="s2">&quot;questionBank.db&quot;</span><span class="s0">;</span>
+    <span class="s0">private static final int </span><span class="s1">DATABASE_VERSION = </span><span class="s3">1</span><span class="s0">;</span>
+    <span class="s0">private static final </span><span class="s1">String TABLE_QUESTION = </span><span class="s2">&quot;QuestionBank&quot;</span><span class="s0">;</span>
+    <span class="s0">private static final </span><span class="s1">String KEY_ID = </span><span class="s2">&quot;id&quot;</span><span class="s0">;</span>
+    <span class="s0">private static final </span><span class="s1">String QUESTION = </span><span class="s2">&quot;question&quot;</span><span class="s0">;</span>
+    <span class="s0">private static final </span><span class="s1">String CHOICE1 = </span><span class="s2">&quot;choice1&quot;</span><span class="s0">;</span>
+    <span class="s0">private static final </span><span class="s1">String CHOICE2 = </span><span class="s2">&quot;choice2&quot;</span><span class="s0">;</span>
+    <span class="s0">private static final </span><span class="s1">String CHOICE3 = </span><span class="s2">&quot;choice3&quot;</span><span class="s0">;</span>
+    <span class="s0">private static final </span><span class="s1">String CHOICE4 = </span><span class="s2">&quot;choice4&quot;</span><span class="s0">;</span>
+    <span class="s0">private static final </span><span class="s1">String ANSWER = </span><span class="s2">&quot;answer&quot;</span><span class="s0">;</span>
+
+    <span class="s0">private static final </span><span class="s1">String CREATE_TABLE_QUESTION = </span><span class="s2">&quot;CREATE TABLE &quot;</span>
+            <span class="s1">+ TABLE_QUESTION + </span><span class="s2">&quot;(&quot; </span><span class="s1">+ KEY_ID</span>
+            <span class="s1">+ </span><span class="s2">&quot; INTEGER PRIMARY KEY AUTOINCREMENT,&quot; </span><span class="s1">+ QUESTION + </span><span class="s2">&quot; TEXT,&quot;</span>
+            <span class="s1">+ CHOICE1 + </span><span class="s2">&quot; TEXT, &quot; </span><span class="s1">+ CHOICE2 + </span><span class="s2">&quot; TEXT, &quot; </span><span class="s1">+ CHOICE3 + </span><span class="s2">&quot; TEXT, &quot;</span>
+            <span class="s1">+ CHOICE4 + </span><span class="s2">&quot; TEXT, &quot; </span><span class="s1">+ ANSWER + </span><span class="s2">&quot; TEXT);&quot;</span><span class="s0">;</span>
+
+    <span class="s0">public </span><span class="s1">DatabaseHelper(Context context) {</span>
+        <span class="s0">super</span><span class="s1">(context</span><span class="s0">, </span><span class="s1">DATABASE_QUESTION</span><span class="s0">, null, </span><span class="s1">DATABASE_VERSION)</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">public void </span><span class="s1">onCreate(SQLiteDatabase db) {</span>
+        <span class="s1">db.execSQL(CREATE_TABLE_QUESTION)</span><span class="s0">; </span><span class="s4">// create question table</span>
+    <span class="s1">}</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">public void </span><span class="s1">onUpgrade(SQLiteDatabase db</span><span class="s0">, int </span><span class="s1">oldVersion</span><span class="s0">, int </span><span class="s1">newVersion) {</span>
+        <span class="s1">db.execSQL(</span><span class="s2">&quot;DROP TABLE IF EXISTS contact&quot;</span><span class="s1">)</span><span class="s0">; </span><span class="s4">// drop table if exists</span>
+        <span class="s1">onCreate(db)</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public long </span><span class="s1">addInitialQuestion(Domande question) {</span>
+        <span class="s1">SQLiteDatabase db = </span><span class="s0">this</span><span class="s1">.getWritableDatabase()</span><span class="s0">;</span>
+        <span class="s4">// Creating content values</span>
+        <span class="s1">ContentValues values = </span><span class="s0">new </span><span class="s1">ContentValues()</span><span class="s0">;</span>
+        <span class="s1">values.put(QUESTION</span><span class="s0">, </span><span class="s1">question.getQuestion())</span><span class="s0">;</span>
+        <span class="s1">values.put(CHOICE1</span><span class="s0">, </span><span class="s1">question.getChoice(</span><span class="s3">0</span><span class="s1">))</span><span class="s0">;</span>
+        <span class="s1">values.put(CHOICE2</span><span class="s0">, </span><span class="s1">question.getChoice(</span><span class="s3">1</span><span class="s1">))</span><span class="s0">;</span>
+        <span class="s1">values.put(CHOICE3</span><span class="s0">,  </span><span class="s1">question.getChoice(</span><span class="s3">2</span><span class="s1">))</span><span class="s0">;</span>
+        <span class="s1">values.put(CHOICE4</span><span class="s0">,  </span><span class="s1">question.getChoice(</span><span class="s3">3</span><span class="s1">))</span><span class="s0">;</span>
+        <span class="s1">values.put(ANSWER</span><span class="s0">, </span><span class="s1">question.getAnswer())</span><span class="s0">;</span>
+        <span class="s4">// insert row in question table</span>
+        <span class="s0">long </span><span class="s1">insert = db.insert(TABLE_QUESTION</span><span class="s0">, null, </span><span class="s1">values)</span><span class="s0">;</span>
+        <span class="s0">return </span><span class="s1">insert</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public </span><span class="s1">List&lt;Domande&gt; getAllQuestionsList() {</span>
+
+        <span class="s1">List&lt;Domande&gt; questionArrayList = </span><span class="s0">new </span><span class="s1">ArrayList&lt;&gt;()</span><span class="s0">;</span>
+        <span class="s1">String selectQuery = </span><span class="s2">&quot;SELECT  * FROM &quot; </span><span class="s1">+ TABLE_QUESTION</span><span class="s0">;</span>
+
+        <span class="s1">SQLiteDatabase db = </span><span class="s0">this</span><span class="s1">.getReadableDatabase()</span><span class="s0">;</span>
+        <span class="s1">Cursor c = db.rawQuery(selectQuery</span><span class="s0">, null</span><span class="s1">)</span><span class="s0">;</span>
+
+        <span class="s4">// looping through all records and adding to the list</span>
+        <span class="s0">if </span><span class="s1">(c.moveToFirst()) {</span>
+            <span class="s0">do </span><span class="s1">{</span>
+                <span class="s1">Domande question = </span><span class="s0">new </span><span class="s1">Domande()</span><span class="s0">;</span>
+
+                <span class="s1">String questText= c.getString(c.getColumnIndex(QUESTION))</span><span class="s0">;</span>
+                <span class="s1">question.setQuestion(questText)</span><span class="s0">;</span>
+
+                <span class="s1">String choice1Text= c.getString(c.getColumnIndex(CHOICE1))</span><span class="s0">;</span>
+                <span class="s1">question.setChoice(</span><span class="s3">0</span><span class="s0">,</span><span class="s1">choice1Text)</span><span class="s0">;</span>
+
+                <span class="s1">String choice2Text= c.getString(c.getColumnIndex(CHOICE2))</span><span class="s0">;</span>
+                <span class="s1">question.setChoice(</span><span class="s3">1</span><span class="s0">,</span><span class="s1">choice2Text)</span><span class="s0">;</span>
+
+                <span class="s1">String choice3Text= c.getString(c.getColumnIndex(CHOICE3))</span><span class="s0">;</span>
+                <span class="s1">question.setChoice(</span><span class="s3">2</span><span class="s0">,</span><span class="s1">choice3Text)</span><span class="s0">;</span>
+
+                <span class="s1">String choice4Text= c.getString(c.getColumnIndex(CHOICE4))</span><span class="s0">;</span>
+                <span class="s1">question.setChoice(</span><span class="s3">3</span><span class="s0">,</span><span class="s1">choice4Text)</span><span class="s0">;</span>
+
+                <span class="s1">String answerText= c.getString(c.getColumnIndex(ANSWER))</span><span class="s0">;</span>
+                <span class="s1">question.setAnswer(answerText)</span><span class="s0">;</span>
+
+                <span class="s4">// adding to Questions list</span>
+                <span class="s1">questionArrayList.add(question)</span><span class="s0">;</span>
+            <span class="s1">} </span><span class="s0">while </span><span class="s1">(c.moveToNext())</span><span class="s0">;</span>
+            <span class="s1">Collections.shuffle(questionArrayList)</span><span class="s0">;</span>
+        <span class="s1">}</span>
+        <span class="s0">return </span><span class="s1">questionArrayList</span><span class="s0">;</span>
+    <span class="s1">}</span>
+<span class="s1">}</span>
+</pre>
+</body>
+</html>

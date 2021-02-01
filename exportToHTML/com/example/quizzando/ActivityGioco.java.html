@@ -1,0 +1,452 @@
+<html>
+<head>
+<title>ActivityGioco.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cc7832;}
+.s1 { color: #a9b7c6;}
+.s2 { color: #808080;}
+.s3 { color: #6897bb;}
+.s4 { color: #6a8759;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+ActivityGioco.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com.example.quizzando</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">androidx.appcompat.app.AlertDialog</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">androidx.appcompat.app.AppCompatActivity</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.content.Intent</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.graphics.Color</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.os.Bundle</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.os.CountDownTimer</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.os.Parcelable</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.util.Log</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.view.View</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.Button</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.EditText</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.ImageView</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.TableLayout</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.TextView</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.Toast</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">java.util.Locale</span><span class="s0">;</span>
+
+<span class="s0">public class </span><span class="s1">ActivityGioco </span><span class="s0">extends </span><span class="s1">AppCompatActivity {</span>
+
+    <span class="s0">private </span><span class="s1">Button BtnRisposta1</span><span class="s0">, </span><span class="s1">BtnRisposta2</span><span class="s0">, </span><span class="s1">BtnRisposta3</span><span class="s0">, </span><span class="s1">BtnRisposta4</span><span class="s0">, </span><span class="s1">Indietro</span><span class="s0">, </span><span class="s1">Btn_IniziaGioco</span><span class="s0">, </span><span class="s1">btn_ScorrDomanda</span><span class="s0">, </span><span class="s1">btn_FineGIoco</span><span class="s0">;</span>
+    <span class="s0">private </span><span class="s1">TextView VisualizzaDomanda</span><span class="s0">, </span><span class="s1">VisualizzaPunteggio</span><span class="s0">, </span><span class="s1">VisualizzaTempo</span><span class="s0">, </span><span class="s1">TextView_Punteggio</span><span class="s0">, </span><span class="s1">textView_Timer</span><span class="s0">, </span><span class="s1">TextViewDomanda</span><span class="s0">, </span><span class="s1">textView_PreGioco</span><span class="s0">;</span>
+    <span class="s0">private </span><span class="s1">TableLayout tableLayout2</span><span class="s0">;</span>
+    <span class="s0">private </span><span class="s1">TextView msgNome</span><span class="s0">;</span>
+
+    <span class="s0">private </span><span class="s1">String mAnswer</span><span class="s0">;  </span><span class="s2">// correct answer for question in mQuestionView</span>
+    <span class="s0">private int </span><span class="s1">mScore = </span><span class="s3">0</span><span class="s0">;  </span><span class="s2">// current total score</span>
+    <span class="s0">private int </span><span class="s1">mQuestionNumber = </span><span class="s3">0</span><span class="s0">; </span><span class="s2">// current question number</span>
+    <span class="s0">private </span><span class="s1">CountDownTimer countDownTimer</span><span class="s0">;</span>
+    <span class="s0">public int </span><span class="s1">RisposteSbagliate = </span><span class="s3">0</span><span class="s0">;</span>
+    <span class="s0">private </span><span class="s1">String NomeGiocatore</span><span class="s0">,</span><span class="s1">Sbagliate</span><span class="s0">;</span>
+
+
+    <span class="s0">private static final long </span><span class="s1">START_TIME_IN_MILLIS = </span><span class="s3">10000</span><span class="s0">;</span>
+    <span class="s0">private boolean </span><span class="s1">mTimerRunning</span><span class="s0">;</span>
+    <span class="s0">private long </span><span class="s1">mTimeLeftInMillis = START_TIME_IN_MILLIS</span><span class="s0">;</span>
+
+    <span class="s0">private </span><span class="s1">RaccoltaDomande mQuestionLibrary = </span><span class="s0">new </span><span class="s1">RaccoltaDomande()</span><span class="s0">;</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">protected void </span><span class="s1">onCreate(Bundle savedInstanceState) {</span>
+        <span class="s0">super</span><span class="s1">.onCreate(savedInstanceState)</span><span class="s0">;</span>
+        <span class="s1">setContentView(R.layout.activity_gioco)</span><span class="s0">;</span>
+        <span class="s1">Indietro = (Button) findViewById(R.id.btn_IndietroGioco)</span><span class="s0">;</span>
+        <span class="s1">VisualizzaDomanda = (TextView) findViewById(R.id.TextView_VisualizzaDomanda)</span><span class="s0">;</span>
+        <span class="s1">VisualizzaPunteggio = (TextView) findViewById(R.id.textView_VisualizzaPunteggio)</span><span class="s0">;</span>
+        <span class="s1">VisualizzaTempo = (TextView) findViewById(R.id.textView_VisualizzaTimer)</span><span class="s0">;</span>
+        <span class="s1">BtnRisposta1 = (Button) findViewById(R.id.Btn_Scelta1)</span><span class="s0">;</span>
+        <span class="s1">BtnRisposta2 = (Button) findViewById(R.id.Btn_Scelta2)</span><span class="s0">;</span>
+        <span class="s1">BtnRisposta3 = (Button) findViewById(R.id.Btn_Scelta3)</span><span class="s0">;</span>
+        <span class="s1">BtnRisposta4 = (Button) findViewById(R.id.Btn_Scelta4)</span><span class="s0">;</span>
+        <span class="s1">Btn_IniziaGioco = (Button) findViewById(R.id.Btn_InizioGioco)</span><span class="s0">;</span>
+        <span class="s1">tableLayout2 = (TableLayout) findViewById(R.id.tableLayout2)</span><span class="s0">;</span>
+        <span class="s1">TextView_Punteggio = (TextView) findViewById(R.id.TextView_Punteggio)</span><span class="s0">;</span>
+        <span class="s1">textView_Timer = (TextView) findViewById(R.id.textView_Timer)</span><span class="s0">;</span>
+        <span class="s1">TextViewDomanda = (TextView) findViewById(R.id.TextViewDomanda)</span><span class="s0">;</span>
+        <span class="s1">textView_PreGioco = (TextView) findViewById(R.id.textView_PreGioco)</span><span class="s0">;</span>
+        <span class="s1">btn_ScorrDomanda = (Button) findViewById(R.id.btn_ScorrDomanda)</span><span class="s0">;</span>
+        <span class="s1">btn_ScorrDomanda.setVisibility(View.INVISIBLE)</span><span class="s0">;</span>
+        <span class="s1">msgNome = (TextView) findViewById(R.id.textNomeGiocatore2)</span><span class="s0">;</span>
+        <span class="s1">btn_FineGIoco = (Button) findViewById(R.id.btn_FineGioco)</span><span class="s0">;</span>
+
+        <span class="s1">mQuestionLibrary.initQuestions(getApplicationContext())</span><span class="s0">;</span>
+        <span class="s1">updateQuestion()</span><span class="s0">;</span>
+        <span class="s2">// show current total score for the user</span>
+        <span class="s1">updateScore(mScore)</span><span class="s0">;</span>
+
+
+        <span class="s1">Intent im1 = getIntent()</span><span class="s0">;</span>
+        <span class="s0">if </span><span class="s1">(im1.hasExtra(</span><span class="s4">&quot;Png1&quot;</span><span class="s1">)) {</span>
+            <span class="s1">String msg = im1.getStringExtra(</span><span class="s4">&quot;Png1&quot;</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">ImageView msgImg1 = (ImageView) findViewById(R.id.imageView1R3)</span><span class="s0">;</span>
+            <span class="s1">msgImg1.setImageResource(im1.getIntExtra(</span><span class="s4">&quot;Png1&quot;</span><span class="s0">,</span><span class="s3">0</span><span class="s1">))</span><span class="s0">;</span>
+
+        <span class="s1">}</span>
+
+        <span class="s1">Intent colore = getIntent()</span><span class="s0">;</span>
+        <span class="s0">if </span><span class="s1">(colore.hasExtra(</span><span class="s4">&quot;colore1&quot;</span><span class="s1">)) {</span>
+            <span class="s1">String msg = colore.getStringExtra(</span><span class="s4">&quot;colore1&quot;</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">ImageView msgImg1 = (ImageView) findViewById(R.id.imageView1R3)</span><span class="s0">;</span>
+            <span class="s1">msgImg1.setBackgroundColor(colore.getIntExtra(</span><span class="s4">&quot;colore1&quot;</span><span class="s0">,</span><span class="s3">0</span><span class="s1">))</span><span class="s0">;</span>
+        <span class="s1">}</span>
+
+        <span class="s1">Intent t = getIntent()</span><span class="s0">;</span>
+        <span class="s0">if </span><span class="s1">(t.hasExtra(</span><span class="s4">&quot;Message&quot;</span><span class="s1">)) {</span>
+            <span class="s1">String msg = t.getStringExtra(</span><span class="s4">&quot;Message&quot;</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">msgNome.setText(msg)</span><span class="s0">;</span>
+            <span class="s1">NomeGiocatore = msg</span><span class="s0">;</span>
+        <span class="s1">}</span>
+
+        <span class="s1">btn_FineGIoco.setOnClickListener(v -&gt;</span>
+        <span class="s1">{</span>
+            <span class="s1">Sbagliate = </span><span class="s4">&quot;&quot; </span><span class="s1">+ mScore</span><span class="s0">;</span>
+            <span class="s1">Intent i = </span><span class="s0">new </span><span class="s1">Intent(ActivityGioco.</span><span class="s0">this,</span><span class="s1">Activity_RisultatoFinale.</span><span class="s0">class</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">i.putExtra(</span><span class="s4">&quot;Png1&quot;</span><span class="s0">,</span><span class="s1">im1.getIntExtra(</span><span class="s4">&quot;Png1&quot;</span><span class="s0">,</span><span class="s3">0</span><span class="s1">))</span><span class="s0">;</span>
+            <span class="s1">i.putExtra(</span><span class="s4">&quot;colore1&quot;</span><span class="s0">,</span><span class="s1">colore.getIntExtra(</span><span class="s4">&quot;colore1&quot;</span><span class="s0">,</span><span class="s3">0</span><span class="s1">))</span><span class="s0">;</span>
+            <span class="s1">i.putExtra(</span><span class="s4">&quot;Message&quot;</span><span class="s0">,</span><span class="s1">NomeGiocatore)</span><span class="s0">;</span>
+            <span class="s1">i.putExtra(</span><span class="s4">&quot;Punteggio&quot;</span><span class="s0">,</span><span class="s1">Sbagliate)</span><span class="s0">;</span>
+            <span class="s1">i.putExtra(</span><span class="s4">&quot;Sbagliate&quot;</span><span class="s0">,</span><span class="s1">RisposteSbagliate)</span><span class="s0">;</span>
+            <span class="s1">startActivity(i)</span><span class="s0">;</span>
+        <span class="s1">})</span><span class="s0">;</span>
+
+
+        <span class="s1">btn_ScorrDomanda.setOnClickListener(v -&gt; {</span>
+
+            <span class="s0">if </span><span class="s1">(mTimerRunning) {</span>
+                <span class="s1">pauseTimer()</span><span class="s0">;</span>
+
+            <span class="s1">} </span><span class="s0">else </span><span class="s1">{</span>
+                <span class="s1">resetTimer()</span><span class="s0">;</span>
+                <span class="s1">startTimer()</span><span class="s0">;</span>
+            <span class="s1">}</span>
+
+            <span class="s1">updateQuestion()</span><span class="s0">;</span>
+            <span class="s1">BtnRisposta1.setBackgroundColor(Color.BLUE)</span><span class="s0">;</span>
+            <span class="s1">BtnRisposta2.setBackgroundColor(Color.BLUE)</span><span class="s0">;</span>
+            <span class="s1">BtnRisposta3.setBackgroundColor(Color.BLUE)</span><span class="s0">;</span>
+            <span class="s1">BtnRisposta4.setBackgroundColor(Color.BLUE)</span><span class="s0">;</span>
+            <span class="s1">BtnRisposta1.setEnabled(</span><span class="s0">true</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">BtnRisposta2.setEnabled(</span><span class="s0">true</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">BtnRisposta3.setEnabled(</span><span class="s0">true</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">BtnRisposta4.setEnabled(</span><span class="s0">true</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">btn_ScorrDomanda.setVisibility(View.INVISIBLE)</span><span class="s0">;</span>
+        <span class="s1">})</span><span class="s0">;</span>
+
+
+        <span class="s1">Btn_IniziaGioco.setOnClickListener(v -&gt; {</span>
+            <span class="s1">BtnRisposta1.setVisibility(View.VISIBLE)</span><span class="s0">;</span>
+            <span class="s1">BtnRisposta2.setVisibility(View.VISIBLE)</span><span class="s0">;</span>
+            <span class="s1">BtnRisposta3.setVisibility(View.VISIBLE)</span><span class="s0">;</span>
+            <span class="s1">BtnRisposta4.setVisibility(View.VISIBLE)</span><span class="s0">;</span>
+            <span class="s1">Indietro.setVisibility(View.VISIBLE)</span><span class="s0">;</span>
+            <span class="s1">tableLayout2.setVisibility(View.VISIBLE)</span><span class="s0">;</span>
+            <span class="s1">VisualizzaTempo.setVisibility(View.VISIBLE)</span><span class="s0">;</span>
+            <span class="s1">VisualizzaPunteggio.setVisibility(View.VISIBLE)</span><span class="s0">;</span>
+            <span class="s1">VisualizzaDomanda.setVisibility(View.VISIBLE)</span><span class="s0">;</span>
+            <span class="s1">TextView_Punteggio.setVisibility(View.VISIBLE)</span><span class="s0">;</span>
+            <span class="s1">textView_Timer.setVisibility(View.VISIBLE)</span><span class="s0">;</span>
+            <span class="s1">TextViewDomanda.setVisibility(View.VISIBLE)</span><span class="s0">;</span>
+            <span class="s1">Btn_IniziaGioco.setVisibility(View.VISIBLE)</span><span class="s0">;</span>
+            <span class="s1">textView_PreGioco.setVisibility(View.INVISIBLE)</span><span class="s0">;</span>
+            <span class="s1">Btn_IniziaGioco.setVisibility(View.INVISIBLE)</span><span class="s0">;</span>
+            <span class="s1">Indietro.setVisibility(View.INVISIBLE)</span><span class="s0">;</span>
+
+            <span class="s0">if </span><span class="s1">(mTimerRunning) {</span>
+                <span class="s1">pauseTimer()</span><span class="s0">;</span>
+            <span class="s1">} </span><span class="s0">else </span><span class="s1">{</span>
+                <span class="s1">startTimer()</span><span class="s0">;</span>
+            <span class="s1">}</span>
+        <span class="s1">})</span><span class="s0">;</span>
+
+
+        <span class="s1">Indietro.setOnClickListener(v -&gt; {</span>
+            <span class="s1">Intent c = </span><span class="s0">new </span><span class="s1">Intent(ActivityGioco.</span><span class="s0">this, </span><span class="s1">MainActivity.</span><span class="s0">class</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">startActivity(c)</span><span class="s0">;</span>
+        <span class="s1">})</span><span class="s0">;</span>
+
+        <span class="s1">BtnRisposta1.setOnClickListener(v -&gt; {</span>
+
+            <span class="s0">if </span><span class="s1">(mTimerRunning) {</span>
+                <span class="s1">pauseTimer()</span><span class="s0">;</span>
+            <span class="s1">} </span><span class="s0">else </span><span class="s1">{</span>
+                <span class="s1">startTimer()</span><span class="s0">;</span>
+            <span class="s1">}</span>
+
+            <span class="s1">btn_ScorrDomanda.setVisibility(View.VISIBLE)</span><span class="s0">;</span>
+            <span class="s0">if </span><span class="s1">(BtnRisposta1.getText().equals(mAnswer)) {</span>
+                <span class="s1">mScore = mScore + </span><span class="s3">1</span><span class="s0">;</span>
+                <span class="s1">Toast.makeText(ActivityGioco.</span><span class="s0">this, </span><span class="s4">&quot;Correct!&quot;</span><span class="s0">, </span><span class="s1">Toast.LENGTH_SHORT).show()</span><span class="s0">;</span>
+                <span class="s1">BtnRisposta1.setBackgroundColor(Color.GREEN)</span><span class="s0">;</span>
+                <span class="s1">BtnRisposta1.setEnabled(</span><span class="s0">false</span><span class="s1">)</span><span class="s0">;</span>
+                <span class="s1">updateScore(mScore)</span><span class="s0">;</span>
+            <span class="s1">} </span><span class="s0">else </span><span class="s1">{</span>
+                <span class="s1">Toast.makeText(ActivityGioco.</span><span class="s0">this, </span><span class="s4">&quot;Wrong!&quot;</span><span class="s0">, </span><span class="s1">Toast.LENGTH_SHORT).show()</span><span class="s0">;</span>
+                <span class="s1">RisposteSbagliate = RisposteSbagliate +</span><span class="s3">1</span><span class="s0">;</span>
+                <span class="s1">BtnRisposta1.setEnabled(</span><span class="s0">false</span><span class="s1">)</span><span class="s0">;</span>
+                <span class="s1">BtnRisposta1.setBackgroundColor(Color.RED)</span><span class="s0">;</span>
+            <span class="s1">}</span>
+
+            <span class="s0">if </span><span class="s1">(BtnRisposta2.getText().equals(mAnswer)) {</span>
+                <span class="s1">BtnRisposta2.setBackgroundColor(Color.GREEN)</span><span class="s0">;</span>
+                <span class="s1">BtnRisposta2.setEnabled(</span><span class="s0">false</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">} </span><span class="s0">else </span><span class="s1">{</span>
+                <span class="s1">BtnRisposta2.setBackgroundColor(Color.RED)</span><span class="s0">;</span>
+                <span class="s1">BtnRisposta2.setEnabled(</span><span class="s0">false</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">}</span>
+
+            <span class="s0">if </span><span class="s1">(BtnRisposta3.getText().equals(mAnswer)) {</span>
+                <span class="s1">BtnRisposta3.setBackgroundColor(Color.GREEN)</span><span class="s0">;</span>
+                <span class="s1">BtnRisposta3.setEnabled(</span><span class="s0">false</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">} </span><span class="s0">else </span><span class="s1">{</span>
+                <span class="s1">BtnRisposta3.setBackgroundColor(Color.RED)</span><span class="s0">;</span>
+                <span class="s1">BtnRisposta3.setEnabled(</span><span class="s0">false</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">}</span>
+
+            <span class="s0">if </span><span class="s1">(BtnRisposta4.getText().equals(mAnswer)) {</span>
+                <span class="s1">BtnRisposta4.setBackgroundColor(Color.GREEN)</span><span class="s0">;</span>
+                <span class="s1">BtnRisposta4.setEnabled(</span><span class="s0">false</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">} </span><span class="s0">else </span><span class="s1">{</span>
+                <span class="s1">BtnRisposta4.setBackgroundColor(Color.RED)</span><span class="s0">;</span>
+                <span class="s1">BtnRisposta4.setEnabled(</span><span class="s0">false</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">}</span>
+
+
+        <span class="s1">})</span><span class="s0">;</span>
+        <span class="s1">BtnRisposta2.setOnClickListener(v -&gt; {</span>
+
+            <span class="s0">if </span><span class="s1">(mTimerRunning) {</span>
+                <span class="s1">pauseTimer()</span><span class="s0">;</span>
+            <span class="s1">} </span><span class="s0">else </span><span class="s1">{</span>
+                <span class="s1">startTimer()</span><span class="s0">;</span>
+            <span class="s1">}</span>
+
+            <span class="s1">btn_ScorrDomanda.setVisibility(View.VISIBLE)</span><span class="s0">;</span>
+            <span class="s0">if </span><span class="s1">(BtnRisposta2.getText().equals(mAnswer)) {</span>
+                <span class="s1">mScore = mScore + </span><span class="s3">1</span><span class="s0">;</span>
+                <span class="s1">Toast.makeText(ActivityGioco.</span><span class="s0">this, </span><span class="s4">&quot;Correct!&quot;</span><span class="s0">, </span><span class="s1">Toast.LENGTH_SHORT).show()</span><span class="s0">;</span>
+                <span class="s1">BtnRisposta2.setBackgroundColor(Color.GREEN)</span><span class="s0">;</span>
+                <span class="s1">BtnRisposta2.setEnabled(</span><span class="s0">false</span><span class="s1">)</span><span class="s0">;</span>
+                <span class="s1">updateScore(mScore)</span><span class="s0">;</span>
+            <span class="s1">} </span><span class="s0">else </span><span class="s1">{</span>
+                <span class="s1">Toast.makeText(ActivityGioco.</span><span class="s0">this, </span><span class="s4">&quot;Wrong!&quot;</span><span class="s0">, </span><span class="s1">Toast.LENGTH_SHORT).show()</span><span class="s0">;</span>
+                <span class="s1">RisposteSbagliate = RisposteSbagliate +</span><span class="s3">1</span><span class="s0">;</span>
+                <span class="s1">BtnRisposta2.setBackgroundColor(Color.RED)</span><span class="s0">;</span>
+                <span class="s1">BtnRisposta2.setEnabled(</span><span class="s0">false</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">}</span>
+
+            <span class="s0">if </span><span class="s1">(BtnRisposta1.getText().equals(mAnswer)) {</span>
+                <span class="s1">BtnRisposta1.setBackgroundColor(Color.GREEN)</span><span class="s0">;</span>
+                <span class="s1">BtnRisposta1.setEnabled(</span><span class="s0">false</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">} </span><span class="s0">else </span><span class="s1">{</span>
+                <span class="s1">BtnRisposta1.setBackgroundColor(Color.RED)</span><span class="s0">;</span>
+                <span class="s1">BtnRisposta1.setEnabled(</span><span class="s0">false</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">}</span>
+
+            <span class="s0">if </span><span class="s1">(BtnRisposta3.getText().equals(mAnswer)) {</span>
+                <span class="s1">BtnRisposta3.setBackgroundColor(Color.GREEN)</span><span class="s0">;</span>
+                <span class="s1">BtnRisposta3.setEnabled(</span><span class="s0">false</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">} </span><span class="s0">else </span><span class="s1">{</span>
+                <span class="s1">BtnRisposta3.setBackgroundColor(Color.RED)</span><span class="s0">;</span>
+                <span class="s1">BtnRisposta3.setEnabled(</span><span class="s0">false</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">}</span>
+
+            <span class="s0">if </span><span class="s1">(BtnRisposta4.getText().equals(mAnswer)) {</span>
+                <span class="s1">BtnRisposta4.setBackgroundColor(Color.GREEN)</span><span class="s0">;</span>
+                <span class="s1">BtnRisposta4.setEnabled(</span><span class="s0">false</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">} </span><span class="s0">else </span><span class="s1">{</span>
+                <span class="s1">BtnRisposta4.setBackgroundColor(Color.RED)</span><span class="s0">;</span>
+                <span class="s1">BtnRisposta4.setEnabled(</span><span class="s0">false</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">}</span>
+
+        <span class="s1">})</span><span class="s0">;</span>
+        <span class="s1">BtnRisposta3.setOnClickListener(v -&gt; {</span>
+
+            <span class="s0">if </span><span class="s1">(mTimerRunning) {</span>
+                <span class="s1">pauseTimer()</span><span class="s0">;</span>
+            <span class="s1">} </span><span class="s0">else </span><span class="s1">{</span>
+                <span class="s1">startTimer()</span><span class="s0">;</span>
+            <span class="s1">}</span>
+
+            <span class="s1">btn_ScorrDomanda.setVisibility(View.VISIBLE)</span><span class="s0">;</span>
+            <span class="s0">if </span><span class="s1">(BtnRisposta3.getText().equals(mAnswer)) {</span>
+                <span class="s1">mScore = mScore + </span><span class="s3">1</span><span class="s0">;</span>
+                <span class="s1">Toast.makeText(ActivityGioco.</span><span class="s0">this, </span><span class="s4">&quot;Correct!&quot;</span><span class="s0">, </span><span class="s1">Toast.LENGTH_SHORT).show()</span><span class="s0">;</span>
+                <span class="s1">BtnRisposta3.setBackgroundColor(Color.GREEN)</span><span class="s0">;</span>
+                <span class="s1">BtnRisposta3.setEnabled(</span><span class="s0">false</span><span class="s1">)</span><span class="s0">;</span>
+                <span class="s1">updateScore(mScore)</span><span class="s0">;</span>
+            <span class="s1">} </span><span class="s0">else </span><span class="s1">{</span>
+                <span class="s1">Toast.makeText(ActivityGioco.</span><span class="s0">this, </span><span class="s4">&quot;Wrong!&quot;</span><span class="s0">, </span><span class="s1">Toast.LENGTH_SHORT).show()</span><span class="s0">;</span>
+                <span class="s1">RisposteSbagliate = RisposteSbagliate +</span><span class="s3">1</span><span class="s0">;</span>
+                <span class="s1">BtnRisposta3.setBackgroundColor(Color.RED)</span><span class="s0">;</span>
+                <span class="s1">BtnRisposta3.setEnabled(</span><span class="s0">false</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">}</span>
+
+            <span class="s0">if </span><span class="s1">(BtnRisposta4.getText().equals(mAnswer)) {</span>
+                <span class="s1">BtnRisposta4.setBackgroundColor(Color.GREEN)</span><span class="s0">;</span>
+                <span class="s1">BtnRisposta4.setEnabled(</span><span class="s0">false</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">} </span><span class="s0">else </span><span class="s1">{</span>
+                <span class="s1">BtnRisposta4.setBackgroundColor(Color.RED)</span><span class="s0">;</span>
+                <span class="s1">BtnRisposta4.setEnabled(</span><span class="s0">false</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">}</span>
+
+            <span class="s0">if </span><span class="s1">(BtnRisposta1.getText().equals(mAnswer)) {</span>
+                <span class="s1">BtnRisposta1.setBackgroundColor(Color.GREEN)</span><span class="s0">;</span>
+                <span class="s1">BtnRisposta1.setEnabled(</span><span class="s0">false</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">} </span><span class="s0">else </span><span class="s1">{</span>
+                <span class="s1">BtnRisposta1.setBackgroundColor(Color.RED)</span><span class="s0">;</span>
+                <span class="s1">BtnRisposta1.setEnabled(</span><span class="s0">false</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">}</span>
+
+            <span class="s0">if </span><span class="s1">(BtnRisposta2.getText().equals(mAnswer)) {</span>
+                <span class="s1">BtnRisposta2.setBackgroundColor(Color.GREEN)</span><span class="s0">;</span>
+                <span class="s1">BtnRisposta2.setEnabled(</span><span class="s0">false</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">} </span><span class="s0">else </span><span class="s1">{</span>
+                <span class="s1">BtnRisposta2.setBackgroundColor(Color.RED)</span><span class="s0">;</span>
+                <span class="s1">BtnRisposta2.setEnabled(</span><span class="s0">false</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">}</span>
+
+        <span class="s1">})</span><span class="s0">;</span>
+        <span class="s1">BtnRisposta4.setOnClickListener(v -&gt; {</span>
+
+            <span class="s0">if </span><span class="s1">(mTimerRunning) {</span>
+                <span class="s1">pauseTimer()</span><span class="s0">;</span>
+            <span class="s1">} </span><span class="s0">else </span><span class="s1">{</span>
+                <span class="s1">startTimer()</span><span class="s0">;</span>
+            <span class="s1">}</span>
+
+            <span class="s1">btn_ScorrDomanda.setVisibility(View.VISIBLE)</span><span class="s0">;</span>
+            <span class="s0">if </span><span class="s1">(BtnRisposta4.getText().equals(mAnswer)) {</span>
+                <span class="s1">mScore = mScore + </span><span class="s3">1</span><span class="s0">;</span>
+                <span class="s1">Toast.makeText(ActivityGioco.</span><span class="s0">this, </span><span class="s4">&quot;Correct!&quot;</span><span class="s0">, </span><span class="s1">Toast.LENGTH_SHORT).show()</span><span class="s0">;</span>
+                <span class="s1">BtnRisposta4.setBackgroundColor(Color.GREEN)</span><span class="s0">;</span>
+                <span class="s1">BtnRisposta4.setEnabled(</span><span class="s0">false</span><span class="s1">)</span><span class="s0">;</span>
+                <span class="s1">updateScore(mScore)</span><span class="s0">;</span>
+            <span class="s1">} </span><span class="s0">else </span><span class="s1">{</span>
+                <span class="s1">Toast.makeText(ActivityGioco.</span><span class="s0">this, </span><span class="s4">&quot;Wrong!&quot;</span><span class="s0">, </span><span class="s1">Toast.LENGTH_SHORT).show()</span><span class="s0">;</span>
+                <span class="s1">RisposteSbagliate = RisposteSbagliate +</span><span class="s3">1</span><span class="s0">;</span>
+                <span class="s1">BtnRisposta4.setBackgroundColor(Color.RED)</span><span class="s0">;</span>
+                <span class="s1">BtnRisposta4.setEnabled(</span><span class="s0">false</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">}</span>
+
+            <span class="s0">if </span><span class="s1">(BtnRisposta3.getText().equals(mAnswer)) {</span>
+                <span class="s1">BtnRisposta3.setBackgroundColor(Color.GREEN)</span><span class="s0">;</span>
+                <span class="s1">BtnRisposta3.setEnabled(</span><span class="s0">false</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">} </span><span class="s0">else </span><span class="s1">{</span>
+                <span class="s1">BtnRisposta3.setBackgroundColor(Color.RED)</span><span class="s0">;</span>
+                <span class="s1">BtnRisposta3.setEnabled(</span><span class="s0">false</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">}</span>
+
+            <span class="s0">if </span><span class="s1">(BtnRisposta2.getText().equals(mAnswer)) {</span>
+                <span class="s1">BtnRisposta2.setBackgroundColor(Color.GREEN)</span><span class="s0">;</span>
+                <span class="s1">BtnRisposta2.setEnabled(</span><span class="s0">false</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">} </span><span class="s0">else </span><span class="s1">{</span>
+                <span class="s1">BtnRisposta2.setBackgroundColor(Color.RED)</span><span class="s0">;</span>
+                <span class="s1">BtnRisposta2.setEnabled(</span><span class="s0">false</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">}</span>
+            <span class="s0">if </span><span class="s1">(BtnRisposta1.getText().equals(mAnswer)) {</span>
+                <span class="s1">BtnRisposta1.setBackgroundColor(Color.GREEN)</span><span class="s0">;</span>
+                <span class="s1">BtnRisposta1.setEnabled(</span><span class="s0">false</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">} </span><span class="s0">else </span><span class="s1">{</span>
+                <span class="s1">BtnRisposta1.setBackgroundColor(Color.RED)</span><span class="s0">;</span>
+                <span class="s1">BtnRisposta1.setEnabled(</span><span class="s0">false</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">}</span>
+        <span class="s1">})</span><span class="s0">;</span>
+        <span class="s1">updateCountDownText()</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+        <span class="s0">private void </span><span class="s1">startTimer() {</span>
+            <span class="s1">countDownTimer = </span><span class="s0">new </span><span class="s1">CountDownTimer(mTimeLeftInMillis</span><span class="s0">, </span><span class="s3">1</span><span class="s1">) {</span>
+                <span class="s1">@Override</span>
+                <span class="s0">public void </span><span class="s1">onTick(</span><span class="s0">long </span><span class="s1">millisUntilFinished) {</span>
+                    <span class="s1">mTimeLeftInMillis = millisUntilFinished</span><span class="s0">;</span>
+                    <span class="s1">updateCountDownText()</span><span class="s0">;</span>
+                <span class="s1">}</span>
+                <span class="s1">@Override</span>
+                <span class="s0">public void </span><span class="s1">onFinish() {</span>
+                    <span class="s1">mTimerRunning = </span><span class="s0">false;</span>
+                    <span class="s1">btn_ScorrDomanda.setVisibility(View.INVISIBLE)</span><span class="s0">;</span>
+                    <span class="s0">if </span><span class="s1">(mQuestionNumber &lt; mQuestionLibrary.getLength())</span>
+                    <span class="s1">{</span>
+                        <span class="s1">updateQuestion()</span><span class="s0">;</span>
+                        <span class="s1">resetTimer()</span><span class="s0">;</span>
+                        <span class="s1">startTimer()</span><span class="s0">;</span>
+                        <span class="s1">RisposteSbagliate = RisposteSbagliate +</span><span class="s3">1</span><span class="s0">;</span>
+                        <span class="s1">BtnRisposta1.setEnabled(</span><span class="s0">true</span><span class="s1">)</span><span class="s0">;</span>
+                        <span class="s1">BtnRisposta2.setEnabled(</span><span class="s0">true</span><span class="s1">)</span><span class="s0">;</span>
+                        <span class="s1">BtnRisposta3.setEnabled(</span><span class="s0">true</span><span class="s1">)</span><span class="s0">;</span>
+                        <span class="s1">BtnRisposta4.setEnabled(</span><span class="s0">true</span><span class="s1">)</span><span class="s0">;</span>
+                        <span class="s1">BtnRisposta1.setBackgroundColor(Color.BLUE)</span><span class="s0">;</span>
+                        <span class="s1">BtnRisposta2.setBackgroundColor(Color.BLUE)</span><span class="s0">;</span>
+                        <span class="s1">BtnRisposta3.setBackgroundColor(Color.BLUE)</span><span class="s0">;</span>
+                        <span class="s1">BtnRisposta4.setBackgroundColor(Color.BLUE)</span><span class="s0">;</span>
+                    <span class="s1">}</span>
+                <span class="s1">}</span>
+            <span class="s1">}.start()</span><span class="s0">;</span>
+            <span class="s1">mTimerRunning = </span><span class="s0">true;</span>
+        <span class="s1">}</span>
+        <span class="s0">private void </span><span class="s1">pauseTimer() {</span>
+            <span class="s1">countDownTimer.cancel()</span><span class="s0">;</span>
+            <span class="s1">mTimerRunning = </span><span class="s0">false;</span>
+        <span class="s1">}</span>
+
+    <span class="s0">private void </span><span class="s1">resetTimer() {</span>
+        <span class="s1">mTimeLeftInMillis = START_TIME_IN_MILLIS</span><span class="s0">;</span>
+        <span class="s1">updateCountDownText()</span><span class="s0">;</span>
+    <span class="s1">}</span>
+    <span class="s0">private void </span><span class="s1">updateCountDownText() {</span>
+        <span class="s0">int </span><span class="s1">seconds = (</span><span class="s0">int</span><span class="s1">) (mTimeLeftInMillis / </span><span class="s3">1000</span><span class="s1">) % </span><span class="s3">60</span><span class="s0">;</span>
+        <span class="s0">int </span><span class="s1">ms = (</span><span class="s0">int</span><span class="s1">) (mTimeLeftInMillis % </span><span class="s3">1000</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">String timeLeftFormatted = String.format(Locale.getDefault()</span><span class="s0">, </span><span class="s4">&quot;%02d.%03d&quot;</span><span class="s0">, </span><span class="s1">seconds</span><span class="s0">,</span><span class="s1">ms)</span><span class="s0">;</span>
+        <span class="s1">VisualizzaTempo.setText(timeLeftFormatted)</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">private void </span><span class="s1">updateQuestion() {</span>
+        <span class="s2">// check if we are not outside array bounds for questions</span>
+        <span class="s0">if </span><span class="s1">(mQuestionNumber &lt; mQuestionLibrary.getLength()) {</span>
+            <span class="s2">// set the text for new question,</span>
+            <span class="s2">// and new 4 alternative to answer on four buttons</span>
+            <span class="s1">VisualizzaDomanda.setText(mQuestionLibrary.getQuestion(mQuestionNumber))</span><span class="s0">;</span>
+            <span class="s1">BtnRisposta1.setText(mQuestionLibrary.getChoice(mQuestionNumber</span><span class="s0">, </span><span class="s3">1</span><span class="s1">))</span><span class="s0">;</span>
+            <span class="s1">BtnRisposta2.setText(mQuestionLibrary.getChoice(mQuestionNumber</span><span class="s0">, </span><span class="s3">2</span><span class="s1">))</span><span class="s0">;</span>
+            <span class="s1">BtnRisposta3.setText(mQuestionLibrary.getChoice(mQuestionNumber</span><span class="s0">, </span><span class="s3">3</span><span class="s1">))</span><span class="s0">;</span>
+            <span class="s1">BtnRisposta4.setText(mQuestionLibrary.getChoice(mQuestionNumber</span><span class="s0">, </span><span class="s3">4</span><span class="s1">))</span><span class="s0">;</span>
+            <span class="s1">mAnswer = mQuestionLibrary.getCorrectAnswer(mQuestionNumber)</span><span class="s0">;</span>
+            <span class="s1">mQuestionNumber++</span><span class="s0">;</span>
+        <span class="s1">} </span><span class="s0">else </span><span class="s1">{</span>
+            <span class="s1">btn_ScorrDomanda.setEnabled(</span><span class="s0">false</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">BtnRisposta1.setEnabled(</span><span class="s0">false</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">BtnRisposta2.setEnabled(</span><span class="s0">false</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">BtnRisposta3.setEnabled(</span><span class="s0">false</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">BtnRisposta4.setEnabled(</span><span class="s0">false</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">btn_FineGIoco.setVisibility(View.VISIBLE)</span><span class="s0">;</span>
+            <span class="s1">Toast.makeText(ActivityGioco.</span><span class="s0">this, </span><span class="s4">&quot;It was the last question!&quot;</span><span class="s0">, </span><span class="s1">Toast.LENGTH_SHORT).show()</span><span class="s0">;</span>
+            <span class="s1">AlertDialog.Builder builder = </span><span class="s0">new </span><span class="s1">AlertDialog.Builder(ActivityGioco.</span><span class="s0">this</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">builder.setTitle(</span><span class="s4">&quot;Attenzione&quot;</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">builder.setMessage(</span><span class="s4">&quot;Quiz finito!&quot;</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">builder.setCancelable(</span><span class="s0">false</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">builder.setNeutralButton(</span><span class="s4">&quot;Chiudi&quot;</span><span class="s0">, </span><span class="s1">(dialog</span><span class="s0">, </span><span class="s1">id) -&gt; {</span>
+                <span class="s1">dialog.dismiss()</span><span class="s0">; </span><span class="s2">// quit AlertDialog</span>
+            <span class="s1">})</span><span class="s0">;</span>
+            <span class="s1">AlertDialog alert = builder.create()</span><span class="s0">;</span>
+            <span class="s1">alert.show()</span><span class="s0">;</span>
+        <span class="s1">}</span>
+    <span class="s1">}</span>
+
+    <span class="s2">// show current total score for the user</span>
+    <span class="s0">private void </span><span class="s1">updateScore(</span><span class="s0">int </span><span class="s1">point) {</span>
+        <span class="s1">VisualizzaPunteggio.setText(</span><span class="s4">&quot;&quot; </span><span class="s1">+ mScore + </span><span class="s4">&quot;/&quot; </span><span class="s1">+ mQuestionLibrary.getLength())</span><span class="s0">;</span>
+    <span class="s1">}</span>
+<span class="s1">}</span></pre>
+</body>
+</html>
