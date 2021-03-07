@@ -26,7 +26,7 @@ import java.util.Date;
 public class Activity_RisultatoFinale extends AppCompatActivity {
     private TextView msgNomeGiocatore, txtRisposteGiusteGiocatore,textErroriRispGiocatore,textPunteggioGiocatore2;
     private Button btn_FineRisultato,btnScreen;
-    private String RispCo,RispSb;
+    private String RispCo,RispSb,totale;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +45,12 @@ public class Activity_RisultatoFinale extends AppCompatActivity {
             String msg = im1.getStringExtra("Png1");
             ImageView msgImg1 = (ImageView) findViewById(R.id.imageView1R2);
             msgImg1.setImageResource(im1.getIntExtra("Png1",0));
+        }
+
+        Intent im5 = getIntent();
+        if (im5.hasExtra("totale")) {
+            String msg = im5.getStringExtra("totale");
+            totale = msg;
         }
 
         Intent colore = getIntent();
@@ -74,7 +80,7 @@ public class Activity_RisultatoFinale extends AppCompatActivity {
             RispSb = msgErroriRisp;
         }
 
-        textPunteggioGiocatore2.setText(RispCo+"/"+RispSb);
+        textPunteggioGiocatore2.setText(RispCo+"/"+totale);
 
         btn_FineRisultato.setOnClickListener(v ->{
             finish();

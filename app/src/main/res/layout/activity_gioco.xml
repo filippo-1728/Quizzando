@@ -36,20 +36,6 @@
         app:layout_constraintVertical_bias="0.444"
         tools:visibility="invisible" />
 
-    <TextView
-        android:id="@+id/textView_VisualizzaTimer"
-        android:layout_width="150dp"
-        android:layout_height="42dp"
-        android:gravity="center"
-        android:textColor="@color/blue"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.95"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.143" />
-
     <TableLayout
         android:id="@+id/tableLayout2"
         android:layout_width="397dp"
@@ -59,7 +45,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.824">
+        app:layout_constraintVertical_bias="0.786">
 
         <Button
             android:id="@+id/Btn_Scelta1"
@@ -111,21 +97,6 @@
     </TableLayout>
 
     <TextView
-        android:id="@+id/textView_Timer"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="TEMPO:"
-        android:textColor="@color/blue"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.95"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.085" />
-
-    <TextView
         android:id="@+id/textViewRisultatoFinale2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -135,10 +106,10 @@
         android:textColor="@color/red"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.476"
+        app:layout_constraintHorizontal_bias="0.52"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.005" />
+        app:layout_constraintVertical_bias="0.023" />
 
     <Button
         android:id="@+id/btn_FineGioco"
@@ -176,62 +147,100 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:text="PUNTEGGIO:"
-        android:textColor="@color/blue"
+        android:textColor="@color/design_default_color_primary_variant"
+        android:textSize="10pt"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.038"
+        app:layout_constraintHorizontal_bias="0.118"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.094" />
+        app:layout_constraintVertical_bias="0.182" />
+
+    <TextView
+        android:id="@+id/textView_Timer"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="TEMPO:"
+        android:textColor="@color/design_default_color_primary_variant"
+        android:textSize="10pt"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.885"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.182" />
+
+    <TextView
+        android:id="@+id/textView_VisualizzaTimer"
+        android:layout_width="150dp"
+        android:layout_height="42dp"
+        android:gravity="center"
+        android:textColor="@color/design_default_color_primary_variant"
+        android:textSize="10pt"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.885"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.242" />
 
     <TextView
         android:id="@+id/textView_VisualizzaPunteggio"
         android:layout_width="150dp"
         android:layout_height="42dp"
         android:gravity="center"
-        android:textColor="@color/blue"
+        android:textColor="@color/design_default_color_primary_variant"
+        android:textSize="10pt"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.038"
+        app:layout_constraintHorizontal_bias="0.118"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.143" />
+        app:layout_constraintVertical_bias="0.233" />
 
     <TextView
         android:id="@+id/TextView_VisualizzaDomanda"
-        android:layout_width="317dp"
-        android:layout_height="58dp"
+        android:layout_width="350dp"
+        android:layout_height="60dp"
         android:gravity="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
         android:textColor="@color/white"
+        android:textSize="10pt"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.508"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.319" />
+        app:layout_constraintVertical_bias="0.45" />
 
     <TextView
         android:id="@+id/TextViewDomanda"
-        android:layout_width="102dp"
-        android:layout_height="42dp"
+        android:layout_width="130dp"
+        android:layout_height="45dp"
         android:gravity="center"
         android:text="DOMANDA:"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
         android:textColor="@color/white"
+        android:textSize="10pt"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.251" />
+        app:layout_constraintVertical_bias="0.364" />
 
     <Button
         android:id="@+id/Btn_InizioGioco"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="PRONTO?"
+        android:text="INIZIA"
         android:textColor="@color/black"
         app:backgroundTint="@color/orange"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -244,15 +253,16 @@
     <TextView
         android:id="@+id/textView_PreGioco"
         android:layout_width="388dp"
-        android:layout_height="243dp"
+        android:layout_height="275dp"
         android:textColor="#FFFFFF"
+        android:textSize="10pt"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.478"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.293" />
+        app:layout_constraintVertical_bias="0.236" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

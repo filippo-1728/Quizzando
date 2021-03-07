@@ -57,37 +57,25 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public List<Domande> getAllQuestionsList() {
-
         SQLiteDatabase db = this.getReadableDatabase();        //db.execSQL("DELETE FROM "+ TABLE_QUESTION);
-
         List<Domande> questionArrayList = new ArrayList<>();
         String selectQuery = "SELECT  * FROM " + TABLE_QUESTION;
-
         Cursor c = db.rawQuery(selectQuery, null);
-
         if (c.moveToFirst()) {
             do {
                 Domande question = new Domande();
-
                 String questText= c.getString(c.getColumnIndex(QUESTION));
                 question.setQuestion(questText);
-
                 String choice1Text= c.getString(c.getColumnIndex(CHOICE1));
                 question.setChoice(0,choice1Text);
-
                 String choice2Text= c.getString(c.getColumnIndex(CHOICE2));
                 question.setChoice(1,choice2Text);
-
                 String choice3Text= c.getString(c.getColumnIndex(CHOICE3));
                 question.setChoice(2,choice3Text);
-
                 String choice4Text= c.getString(c.getColumnIndex(CHOICE4));
                 question.setChoice(3,choice4Text);
-
                 String answerText= c.getString(c.getColumnIndex(ANSWER));
                 question.setAnswer(answerText);
-
-                // adding to Questions list
                 questionArrayList.add(question);
             } while (c.moveToNext());
             Collections.shuffle(questionArrayList);

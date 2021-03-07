@@ -26,9 +26,9 @@ public class ActivityGioco extends AppCompatActivity {
     private TableLayout tableLayout2;
     private ImageView imageView1R3;
 
-    private String mAnswer;
+    private String mAnswer,numdomande;
     private int mScore = 0;
-    private int mQuestionNumber;
+    private int mQuestionNumber, domandacorrente;
     private CountDownTimer countDownTimer;
     public int RisposteSbagliate = 0;
     private String NomeGiocatore,Sbagliate,Giuste;
@@ -65,12 +65,10 @@ public class ActivityGioco extends AppCompatActivity {
         imageView1R3.setVisibility(View.INVISIBLE);
         btn_FineGIoco = (Button) findViewById(R.id.btn_FineGioco);
         textViewRisultatoFinale2 = (TextView) findViewById(R.id.textViewRisultatoFinale2);
-
         mQuestionLibrary.initQuestions(getApplicationContext());
-        updateQuestion();
-        // show current total score for the user
-        updateScore(mScore);
         Regolamento();
+        domandacorrente = 1;
+        TextViewDomanda.setText("Domanda N°"+domandacorrente);
 
 
 
@@ -100,12 +98,14 @@ public class ActivityGioco extends AppCompatActivity {
         {
             Giuste = "" + mScore;
             Sbagliate = "" + RisposteSbagliate;
+            numdomande = "" + mQuestionNumber;
             Intent i = new Intent(ActivityGioco.this,Activity_RisultatoFinale.class);
             i.putExtra("Png1",im1.getIntExtra("Png1",0));
             i.putExtra("colore1",colore.getIntExtra("colore1",0));
             i.putExtra("Message",NomeGiocatore);
             i.putExtra("Punteggio",Giuste);
             i.putExtra("Sbagliate",Sbagliate);
+            i.putExtra("totale",numdomande);
             startActivity(i);
             finish();
         });
@@ -131,17 +131,13 @@ public class ActivityGioco extends AppCompatActivity {
             BtnRisposta3.setEnabled(true);
             BtnRisposta4.setEnabled(true);
             btn_ScorrDomanda.setVisibility(View.INVISIBLE);
+            domandacorrente++;
+            TextViewDomanda.setText("Domanda N°"+domandacorrente);
         });
 
 
         Btn_IniziaGioco.setOnClickListener(v -> {
 
-            if(Btn_IniziaGioco.getText().toString().equals("PRONTO?"))
-            {
-                Btn_IniziaGioco.setText("INIZIA");
-                textViewRisultatoFinale2.setText("Quizzando");
-
-            }
             if(Btn_IniziaGioco.getText().toString().equals("INIZIA"))
             {
                 BtnRisposta1.setVisibility(View.VISIBLE);
@@ -158,8 +154,11 @@ public class ActivityGioco extends AppCompatActivity {
                 Btn_IniziaGioco.setVisibility(View.VISIBLE);
                 textView_PreGioco.setVisibility(View.INVISIBLE);
                 Btn_IniziaGioco.setVisibility(View.INVISIBLE);
+                textViewRisultatoFinale2.setText("Quizzando");
+                updateQuestion();
+                // show current total score for the user
+                updateScore(mScore);
             }
-
 
             if (mTimerRunning) {
                 pauseTimer();
@@ -380,8 +379,11 @@ public class ActivityGioco extends AppCompatActivity {
                     btn_ScorrDomanda.setVisibility(View.INVISIBLE);
                     if (mQuestionNumber < mQuestionLibrary.getLength())
                     {
+                        domandacorrente++;
+                        TextViewDomanda.setText("Domanda N°"+domandacorrente);
                         updateQuestion();
                         SuonoRispSbagliata();
+                        Toast.makeText(ActivityGioco.this, "Errore!", Toast.LENGTH_SHORT).show();
                         resetTimer();
                         startTimer();
                         RisposteSbagliate = RisposteSbagliate +1;
@@ -393,6 +395,10 @@ public class ActivityGioco extends AppCompatActivity {
                         BtnRisposta2.setBackgroundColor(Color.BLUE);
                         BtnRisposta3.setBackgroundColor(Color.BLUE);
                         BtnRisposta4.setBackgroundColor(Color.BLUE);
+                    }
+                    else
+                    {
+                        UltimaDomanda();
                     }
                 }
             }.start();
@@ -415,10 +421,7 @@ public class ActivityGioco extends AppCompatActivity {
     }
 
     private void updateQuestion() {
-        // check if we are not outside array bounds for questions
         if (mQuestionNumber < mQuestionLibrary.getLength()) {
-            // set the text for new question,
-            // and new 4 alternative to answer on four buttons
             VisualizzaDomanda.setText(mQuestionLibrary.getQuestion(mQuestionNumber));
             BtnRisposta1.setText(mQuestionLibrary.getChoice(mQuestionNumber, 1));
             BtnRisposta2.setText(mQuestionLibrary.getChoice(mQuestionNumber, 2));
@@ -433,7 +436,6 @@ public class ActivityGioco extends AppCompatActivity {
     {
         final MediaPlayer SuonoGiusto = MediaPlayer.create(this,R.raw.correct_sound);
         SuonoGiusto.start();
-
     }
 
     private void SuonoRispSbagliata()

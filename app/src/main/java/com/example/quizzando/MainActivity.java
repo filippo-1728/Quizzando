@@ -13,10 +13,15 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Button VaiRegistrazione = (Button) findViewById(R.id.btn_Login);
+        Button ChiudiApp = (Button) findViewById(R.id.btn_ChiudiApp);
 
         VaiRegistrazione.setOnClickListener(v -> {
             Intent vairegistrazione = new Intent(MainActivity.this,Activity_Registrazione.class);
             startActivity(vairegistrazione);
+        });
+
+        ChiudiApp.setOnClickListener(v -> {
+            finish();
         });
     }
 }

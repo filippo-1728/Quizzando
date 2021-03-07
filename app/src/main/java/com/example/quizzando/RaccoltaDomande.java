@@ -70,7 +70,6 @@ public class RaccoltaDomande {
                     new String[]{"Brad Pitt", "Tom Cruise", "Keanu Reeves", "John Travolta"}, "Keanu Reeves"));
             databaseHelper.addInitialQuestion(new Domande(" Completa il nome di questa sqadra di baseball:I Cleveland...? ",
                     new String[]{"Warriors", "Bucks", "Thunder", "Cavaliers"}, "Cavaliers"));
-
             lists = databaseHelper.getAllQuestionsList();//get list from database again
 
         }
